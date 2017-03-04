@@ -68,219 +68,218 @@
     "vnetID": "[resourceId('Microsoft.Network/virtualNetworks', variables('virtualNetworkName'))]",
     "subnetRef": "[concat(variables('vnetID'),'/subnets/',variables('subnetName'))]"
   },
-    "resources": [
-      {
-        "name": "[variables('vmName')]",
-        "type": "Microsoft.Compute/virtualMachines",
-        "apiVersion": "2016-04-30-preview",
-        "location": "[resourceGroup().location]",
-        "dependsOn": [
-          "[concat('Microsoft.Network/networkInterfaces/', variables('virtualNetworkName'))]",
-          "[concat('Microsoft.Storage/storageAccounts/', variables('storageAccountName'))]",
-          "[concat('Microsoft.Storage/storageAccounts/', variables('diagnosticsStorageAccountName'))]"
-        ],
-        "properties": {
-          "osProfile": {
-            "computerName": "[variables('vmName')]",
-            "adminUsername": "[parameters('adminUsername')]",
-            "adminPassword": "[parameters('adminPassword')]"
-          },
-          "hardwareProfile": {
-            "vmSize": "[parameters('vmSize')]"
-          },
-          "storageProfile": {
-            "imageReference": {
-              "publisher": "Canonical",
-              "offer": "UbuntuServer",
-              "sku": "16.04-LTS",
-              "version": "latest"
-            },
-            "osDisk": {
-              "name": "[variables('vmName')]",
-              "createOption": "FromImage",
-              "vhd": {
-                "uri": "[concat(concat(reference(resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName')), '2015-06-15').primaryEndpoints['blob'], 'vhds/'), variables('vmName'),'/' ,variables('OSDiskName'),'.vhd')]"
-              }
-            },
-            "dataDisks": []
-          },
-          "networkProfile": {
-            "networkInterfaces": [
-              {
-                "id": "[resourceId('Microsoft.Network/networkInterfaces', variables('nicName'))]"
-              }
-            ]
-          },
-          "diagnosticsProfile": {
-            "bootDiagnostics": {
-              "enabled": true,
-              "storageUri": "[reference(resourceId('Microsoft.Storage/storageAccounts', variables('diagnosticsStorageAccountName')), '2015-06-15').primaryEndpoints['blob']]"
+  "resources": [
+    {
+      "name": "[variables('storageAccountName')]",
+      "type": "Microsoft.Storage/storageAccounts",
+      "apiVersion": "2015-06-15",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "accountType": "[variables('storageAccountType')]"
+      }
+    },
+    {
+      "name": "[variables('diagnosticsStorageAccountName')]",
+      "type": "Microsoft.Storage/storageAccounts",
+      "apiVersion": "2015-06-15",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "accountType": "[variables('diagnosticsStorageAccountType')]"
+      }
+    },
+    {
+      "name": "[variables('virtualNetworkName')]",
+      "type": "Microsoft.Network/virtualNetworks",
+      "apiVersion": "2016-09-01",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "addressSpace": {
+          "addressPrefixes": [
+            "[variables('addressPrefix')]"
+          ]
+        },
+        "subnets": [
+          {
+            "name": "[variables('subnetName')]",
+            "properties": {
+              "addressPrefix": "[variables('subnetPrefix')]"
             }
           }
+        ]
+      }
+    },
+    {
+      "name": "[variables('nicName')]",
+      "type": "Microsoft.Network/networkInterfaces",
+      "apiVersion": "2016-03-30",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[concat('Microsoft.Network/publicIPAddresses/', variables('publicIPAddressName'))]",
+        "[concat('Microsoft.Network/virtualNetworks/', variables('virtualNetworkName'))]"
+      ],
+      "properties": {
+        "ipConfigurations": [
+          {
+            "name": "ipconfig1",
+            "properties": {
+              "subnet": {
+                "id": "[variables('subnetRef')]"
+              },
+              "privateIPAllocationMethod": "Dynamic",
+              "publicIpAddress": {
+                "id": "[resourceId('Microsoft.Network/publicIpAddresses', variables('publicIpAddressName'))]"
+              }
+            }
+          }
+        ],
+        "networkSecurityGroup": {
+          "id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('nsgName'))]"
         }
-      },
-        {
-            "name": "[variables('storageAccountName')]",
-            "type": "Microsoft.Storage/storageAccounts",
-            "apiVersion": "2015-06-15",
-            "location": "[resourceGroup().location]",
+      }
+    },
+    {
+      "name": "[variables('publicIpAddressName')]",
+      "type": "Microsoft.Network/publicIpAddresses",
+      "apiVersion": "2016-09-01",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "publicIpAllocationMethod": "[variables('publicIpAddressType')]"
+      }
+    },
+    {
+      "name": "[variables('nsgName')]",
+      "type": "Microsoft.Network/networkSecurityGroups",
+      "apiVersion": "2016-09-01",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "securityRules": [
+          {
+            "name": "allow-rpc",
             "properties": {
-                "accountType": "[variables('storageAccountType')]"
+              "priority": 1020,
+              "sourceAddressPrefix": "*",
+              "protocol": "*",
+              "destinationPortRange": "8090",
+              "access": "Allow",
+              "direction": "Inbound",
+              "sourcePortRange": "*",
+              "destinationAddressPrefix": "*"
             }
-        },
-        {
-            "name": "[variables('diagnosticsStorageAccountName')]",
-            "type": "Microsoft.Storage/storageAccounts",
-            "apiVersion": "2015-06-15",
-            "location": "[resourceGroup().location]",
+          },
+          {
+            "name": "allow-http",
             "properties": {
-                "accountType": "[variables('diagnosticsStorageAccountType')]"
+              "priority": 1030,
+              "sourceAddressPrefix": "*",
+              "protocol": "*",
+              "destinationPortRange": "80",
+              "access": "Allow",
+              "direction": "Inbound",
+              "sourcePortRange": "*",
+              "destinationAddressPrefix": "*"
             }
-        },
-        {
-            "name": "[variables('virtualNetworkName')]",
-            "type": "Microsoft.Network/virtualNetworks",
+          },
+          {
+            "name": "default-allow-ssh",
+            "properties": {
+              "priority": 1000,
+              "sourceAddressPrefix": "*",
+              "protocol": "Tcp",
+              "destinationPortRange": "22",
+              "access": "Allow",
+              "direction": "Inbound",
+              "sourcePortRange": "*",
+              "destinationAddressPrefix": "*"
+            }
+          },
+          {
+            "name": "allow-p2p",
+            "properties": {
+              "priority": 1010,
+              "sourceAddressPrefix": "*",
+              "protocol": "*",
+              "destinationPortRange": "1776",
+              "access": "Allow",
+              "direction": "Inbound",
+              "sourcePortRange": "*",
+              "destinationAddressPrefix": "*"
+            }
+          },
+          {
+            "type": "Microsoft.Compute/virtualMachines/extensions",
+            "name": "[concat(variables('vmName'),'/newuserscript')]",
+            "location": "[resourceGroup().location]",
             "apiVersion": "2016-09-01",
-            "location": "[resourceGroup().location]",
-            "properties": {
-                "addressSpace": {
-                    "addressPrefixes": [
-                        "[variables('addressPrefix')]"
-                    ]
-                },
-                "subnets": [
-                    {
-                        "name": "[variables('subnetName')]",
-                        "properties": {
-                            "addressPrefix": "[variables('subnetPrefix')]"
-                        }
-                    }
-                ]
-            }
-        },
-        {
-            "name": "[variables('nicName')]",
-            "type": "Microsoft.Network/networkInterfaces",
-            "apiVersion": "2016-03-30",
-            "location": "[resourceGroup().location]",
             "dependsOn": [
-                "[concat('Microsoft.Network/virtualNetworks/', variables('nicName'))]",
-                "[concat('Microsoft.Network/publicIpAddresses/', variables('publicIpAddressName'))]",
-                "[concat('Microsoft.Network/networkSecurityGroups/', variables('nsgName'))]"
+              "[concat('Microsoft.Compute/virtualMachines/', variables('vmName'))]"
             ],
             "properties": {
-                "ipConfigurations": [
-                    {
-                        "name": "ipconfig1",
-                        "properties": {
-                            "subnet": {
-                                "id": "[variables('subnetRef')]"
-                            },
-                            "privateIPAllocationMethod": "Dynamic",
-                          "publicIpAddress": {
-                            "id": "[resourceId('Microsoft.Network/publicIpAddresses', variables('publicIpAddressName'))]"
-                          }
-                        }
-                    }
+              "publisher": "Microsoft.OSTCExtensions",
+              "type": "CustomScriptForLinux",
+              "typeHandlerVersion": "1.4",
+              "autoUpgradeMinorVersion": true,
+              "settings": {
+                "fileUris": [
+                  "https://raw.githubusercontent.com/ryanRfox/GrapheneData/build_GrapheneData.sh"
                 ],
-                "networkSecurityGroup": {
-                    "id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('nsgName'))]"
-                }
+                "commandToExecute": "[concat('sh Build_BitSharesTESTNET.sh ', parameters('adminUsername'), ' ', reference(resourceId('Microsoft.Network/publicIPAddresses', variables('publicIpAddressName'))).dnsSettings.fqdn)]"
+              }
             }
+          }
+        ]
+      }
+    },
+    {
+      "name": "[variables('vmName')]",
+      "type": "Microsoft.Compute/virtualMachines",
+      "apiVersion": "2016-04-30-preview",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[concat('Microsoft.Network/networkInterfaces/', variables('virtualNetworkName'))]",
+        "[concat('Microsoft.Storage/storageAccounts/', variables('storageAccountName'))]",
+        "[concat('Microsoft.Storage/storageAccounts/', variables('diagnosticsStorageAccountName'))]"
+      ],
+      "properties": {
+        "osProfile": {
+          "computerName": "[variables('vmName')]",
+          "adminUsername": "[parameters('adminUsername')]",
+          "adminPassword": "[parameters('adminPassword')]"
         },
-        {
-            "name": "[variables('publicIpAddressName')]",
-            "type": "Microsoft.Network/publicIpAddresses",
-            "apiVersion": "2016-09-01",
-            "location": "[resourceGroup().location]",
-            "properties": {
-                "publicIpAllocationMethod": "[variables('publicIpAddressType')]"
-            }
+        "hardwareProfile": {
+          "vmSize": "[parameters('vmSize')]"
         },
-        {
-            "name": "[variables('nsgName')]",
-            "type": "Microsoft.Network/networkSecurityGroups",
-            "apiVersion": "2016-09-01",
-            "location": "[resourceGroup().location]",
-            "properties": {
-              "securityRules": [
-                {
-                  "name": "allow-rpc",
-                  "properties": {
-                    "priority": 1020,
-                    "sourceAddressPrefix": "*",
-                    "protocol": "*",
-                    "destinationPortRange": "8090",
-                    "access": "Allow",
-                    "direction": "Inbound",
-                    "sourcePortRange": "*",
-                    "destinationAddressPrefix": "*"
-                  }
-                },
-                {
-                  "name": "allow-http",
-                  "properties": {
-                    "priority": 1030,
-                    "sourceAddressPrefix": "*",
-                    "protocol": "*",
-                    "destinationPortRange": "80",
-                    "access": "Allow",
-                    "direction": "Inbound",
-                    "sourcePortRange": "*",
-                    "destinationAddressPrefix": "*"
-                  }
-                },
-                {
-                  "name": "default-allow-ssh",
-                  "properties": {
-                    "priority": 1000,
-                    "sourceAddressPrefix": "*",
-                    "protocol": "Tcp",
-                    "destinationPortRange": "22",
-                    "access": "Allow",
-                    "direction": "Inbound",
-                    "sourcePortRange": "*",
-                    "destinationAddressPrefix": "*"
-                  }
-                },
-                {
-                  "name": "allow-p2p",
-                  "properties": {
-                    "priority": 1010,
-                    "sourceAddressPrefix": "*",
-                    "protocol": "*",
-                    "destinationPortRange": "1776",
-                    "access": "Allow",
-                    "direction": "Inbound",
-                    "sourcePortRange": "*",
-                    "destinationAddressPrefix": "*"
-                  }
-                },
-                {
-                  "type": "Microsoft.Compute/virtualMachines/extensions",
-                  "name": "[concat(variables('vmName'),'/newuserscript')]",
-                  "location": "[resourceGroup().location]",
-                  "apiVersion": "2016-09-01",
-                  "dependsOn": [
-                    "[concat('Microsoft.Compute/virtualMachines/', variables('vmName'))]"
-                  ],
-                  "properties": {
-                    "publisher": "Microsoft.OSTCExtensions",
-                    "type": "CustomScriptForLinux",
-                    "typeHandlerVersion": "1.4",
-                    "autoUpgradeMinorVersion": true,
-                    "settings": {
-                      "fileUris": [
-                        "https://raw.githubusercontent.com/ryanRfox/GrapheneData/build_GrapheneData.sh"
-                      ],
-                      "commandToExecute": "[concat('sh Build_BitSharesTESTNET.sh ', parameters('adminUsername'), ' ', reference(resourceId('Microsoft.Network/publicIPAddresses', variables('publicIpAddressName'))).dnsSettings.fqdn)]"
-                    }
-                  }
-                }
-              ]
+        "storageProfile": {
+          "imageReference": {
+            "publisher": "Canonical",
+            "offer": "UbuntuServer",
+            "sku": "16.04-LTS",
+            "version": "latest"
+          },
+          "osDisk": {
+            "name": "[variables('vmName')]",
+            "createOption": "FromImage",
+            "vhd": {
+              "uri": "[concat(concat(reference(resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName')), '2015-06-15').primaryEndpoints['blob'], 'vhds/'), variables('vmName'),'/' ,variables('OSDiskName'),'.vhd')]"
             }
+          },
+          "dataDisks": []
+        },
+        "networkProfile": {
+          "networkInterfaces": [
+            {
+              "id": "[resourceId('Microsoft.Network/networkInterfaces', variables('nicName'))]"
+            }
+          ]
+        },
+        "diagnosticsProfile": {
+          "bootDiagnostics": {
+            "enabled": true,
+            "storageUri": "[reference(resourceId('Microsoft.Storage/storageAccounts', variables('diagnosticsStorageAccountName')), '2015-06-15').primaryEndpoints['blob']]"
+          }
         }
-    ],
+      }
+    }
+  ],
     "outputs": {
         "adminUsername": {
             "type": "string",
