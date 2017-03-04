@@ -1,0 +1,60 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "value": "westus2"
+        },
+        "virtualMachineName": {
+            "value": "Template-01"
+        },
+        "virtualMachineSize": {
+            "value": "Standard_DS1_v2"
+        },
+        "adminUsername": {
+            "value": "LabAdmin"
+        },
+        "storageAccountName": {
+            "value": "template01rgdisks372"
+        },
+        "virtualNetworkName": {
+            "value": "TEMPLATE-01-RG-vnet"
+        },
+        "networkInterfaceName": {
+            "value": "template-01127"
+        },
+        "networkSecurityGroupName": {
+            "value": "Template-01-nsg"
+        },
+        "adminPassword": {
+            "value": null
+        },
+        "storageAccountType": {
+            "value": "Premium_LRS"
+        },
+        "diagnosticsStorageAccountName": {
+            "value": "template01rgdiag275"
+        },
+        "diagnosticsStorageAccountType": {
+            "value": "Standard_LRS"
+        },
+        "diagnosticsStorageAccountId": {
+            "value": "Microsoft.Storage/storageAccounts/template01rgdiag275"
+        },
+        "addressPrefix": {
+            "value": "10.1.0.0/24"
+        },
+        "subnetName": {
+            "value": "default"
+        },
+        "subnetPrefix": {
+            "value": "10.1.0.0/24"
+        },
+        "publicIpAddressName": {
+            "value": "Template-01-ip"
+        },
+        "publicIpAddressType": {
+            "value": "Dynamic"
+        }
+    }
+}

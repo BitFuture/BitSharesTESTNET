@@ -1,0 +1,7 @@
+{ 
+  "itemDisplayName": "TESTNET BitShares Witness Node and CLI Wallet on Ubuntu 16.04 LTS", 
+  "description": "Deploy a node on the BitShares TESTNET. Documentation is available at http://docs.bitshares.eu 
+  "summary": "Create Ubuntu VM with BitShares Witness Node and CLI wallet.", 
+  "githubUsername": "ryanRfox", 
+  "dateUpdated": "2017-03-04" 
+}
