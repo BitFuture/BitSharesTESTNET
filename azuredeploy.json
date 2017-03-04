@@ -65,9 +65,8 @@
     "vmStorageAccountContainerName": "vhds",
     "vmName": "[parameters('dnsLabelPrefix')]",
     "virtualNetworkName": "BitSharesVNET",
-    "vnetID": "[resourceId('Microsoft.Network/virtualNetworks',variables('virtualNetworkName'))]",
-    "subnetRef": "[concat(variables('vnetID'),'/subnets/',variables('subnetName'))]",
-    "vnetId": "[resourceId(resourceGroup(),'Microsoft.Network/virtualNetworks', variables('virtualNetworkName'))]"
+    "vnetID": "[resourceId('Microsoft.Network/virtualNetworks', variables('virtualNetworkName'))]",
+    "subnetRef": "[concat(variables('vnetID'),'/subnets/',variables('subnetName'))]"
   },
     "resources": [
       {
