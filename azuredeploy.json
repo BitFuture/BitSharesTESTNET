@@ -99,7 +99,7 @@
               "name": "[variables('vmName')]",
               "createOption": "FromImage",
               "vhd": {
-                "uri": "[concat(concat(reference(resourceId(resourceGroup(), 'Microsoft.Storage/storageAccounts', variables('storageAccountName')), '2015-06-15').primaryEndpoints['blob'], 'vhds/'), variables('vmName'),'/' ,variables('OSDiskName'),'.vhd')]"
+                "uri": "[concat(concat(reference(resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName')), '2015-06-15').primaryEndpoints['blob'], 'vhds/'), variables('vmName'),'/' ,variables('OSDiskName'),'.vhd')]"
               }
             },
             "dataDisks": []
@@ -114,7 +114,7 @@
           "diagnosticsProfile": {
             "bootDiagnostics": {
               "enabled": true,
-              "storageUri": "[reference(resourceId(resourceGroup(), 'Microsoft.Storage/storageAccounts', variables('diagnosticsStorageAccountName')), '2015-06-15').primaryEndpoints['blob']]"
+              "storageUri": "[reference(resourceId('Microsoft.Storage/storageAccounts', variables('diagnosticsStorageAccountName')), '2015-06-15').primaryEndpoints['blob']]"
             }
           }
         }
@@ -178,13 +178,13 @@
                             },
                             "privateIPAllocationMethod": "Dynamic",
                           "publicIpAddress": {
-                            "id": "[resourceId(resourceGroup(),'Microsoft.Network/publicIpAddresses', variables('publicIpAddressName'))]"
+                            "id": "[resourceId('Microsoft.Network/publicIpAddresses', variables('publicIpAddressName'))]"
                           }
                         }
                     }
                 ],
                 "networkSecurityGroup": {
-                    "id": "[resourceId(resourceGroup(), 'Microsoft.Network/networkSecurityGroups', variables('nsgName'))]"
+                    "id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('nsgName'))]"
                 }
             }
         },
