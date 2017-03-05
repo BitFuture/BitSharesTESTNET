@@ -263,7 +263,7 @@
       }
     },
     {
-      "name": "customscript",
+      "name": "[concat(variables('vmName'),'/buildscript')]",
       "type": "Microsoft.Compute/virtualMachines/extensions",
       "location": "[resourceGroup().location]",
       "apiVersion": "2015-06-15",
