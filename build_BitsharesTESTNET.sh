@@ -59,7 +59,7 @@ cd /usr/local/src
 time git clone $GITHUB_REPOSITORY
 cd $PROJECT
 time git submodule update --init --recursive
-sed -i 's/add_subdirectory( tests )/#add_subdirectory( tests )/g' /usr/local/src/graphene/CMakeLists.txt
+sed -i 's/add_subdirectory( tests )/#add_subdirectory( tests )/g' /usr/local/src/$PROJECT/CMakeLists.txt
 
 ##################################################################################################
 # Build the PRIVATE GRAPHENE witness node and CLI wallet.                                        #
