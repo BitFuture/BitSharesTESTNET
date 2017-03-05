@@ -280,7 +280,7 @@
         "autoUpgradeMinorVersion": true,
         "settings": {
           "fileUris": [
-            "https://raw.githubusercontent.com/ryanRfox/BitSharesTESTNET/master/build_BitsharesTESTNET.sh"
+            "https://raw.githubusercontent.com/ryanRfox/BitSharesTESTNET/master/build_BitSharesTESTNET.sh"
           ],
           "commandToExecute": "[concat('sh build_BitSharesTESTNET.sh ', parameters('adminUsername'), ' ', reference(resourceId('Microsoft.Network/publicIPAddresses', variables('publicIpAddressName'))).dnsSettings.fqdn)]"
         }
