@@ -90,7 +90,7 @@
     {
       "name": "[variables('virtualNetworkName')]",
       "type": "Microsoft.Network/virtualNetworks",
-      "apiVersion": "2016-09-01",
+      "apiVersion": "2016-03-30",
       "location": "[resourceGroup().location]",
       "properties": {
         "addressSpace": {
@@ -144,13 +144,16 @@
       "apiVersion": "2016-09-01",
       "location": "[resourceGroup().location]",
       "properties": {
-        "publicIpAllocationMethod": "[variables('publicIpAddressType')]"
+        "publicIpAllocationMethod": "[variables('publicIpAddressType')]",
+        "dnsSettings": {
+          "domainNameLabel": "[parameters('dnsLabelPrefix')]"
+        }
       }
     },
     {
       "name": "[variables('nsgName')]",
       "type": "Microsoft.Network/networkSecurityGroups",
-      "apiVersion": "2016-09-01",
+      "apiVersion": "2016-03-30",
       "location": "[resourceGroup().location]",
       "properties": {
         "securityRules": [
