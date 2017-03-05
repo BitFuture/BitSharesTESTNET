@@ -242,7 +242,7 @@
             "name": "[variables('vmName')]",
             "createOption": "FromImage",
             "vhd": {
-              "uri": "[concat(concat(reference(resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName')), '2015-06-15').primaryEndpoints['blob'], 'vhds/'), variables('vmName'),'/' ,variables('OSDiskName'),'.vhd')]"
+              "uri": "[concat(concat(reference(resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName')), '2015-06-15').primaryEndpoints['blob'], 'vhds/'), variables('vmName') ,variables('OSDiskName'),'.vhd')]"
             }
           },
           "dataDisks": []
