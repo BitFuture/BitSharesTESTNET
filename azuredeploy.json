@@ -266,7 +266,7 @@
       "type": "Microsoft.Compute/virtualMachines/extensions",
       "name": "[concat(variables('vmName'),'/newuserscript')]",
       "location": "[resourceGroup().location]",
-      "apiVersion": "2016-09-01",
+      "apiVersion": "2016-03-30",
       "dependsOn": [
         "[concat('Microsoft.Compute/virtualMachines/', variables('vmName'))]"
       ],
