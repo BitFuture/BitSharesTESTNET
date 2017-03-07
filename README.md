@@ -11,7 +11,7 @@
 
 # Deployment Process
 
-1. **Signup** for an Azure account [FREE $200 credit](https://azure.microsoft.com/Azure/Free-Trial‎)
+1. **Signup** for an Azure account [FREE $200 credit](https://azure.microsoft.com/en-us/free/)
 1. **Deploy** the Azure template [click here](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FryanRfox%2FBitSharesTESTNET%2Fmaster%2Fazuredeploy.json)
 1. **Contribute** to the TESTNET [learn more](https://github.com/BitSharesEurope/testnet) 
 
