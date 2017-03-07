@@ -11,7 +11,7 @@
 
 # Deployment Process
 
-1. **Signup** for an Azure account [FREE $200 credit](azure.microsoft.com/Azure/Free-Trial‎)
+1. **Signup** for an Azure account [FREE $200 credit](https://azure.microsoft.com/Azure/Free-Trial‎)
 1. **Deploy** the Azure template [click here](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FryanRfox%2FBitSharesTESTNET%2Fmaster%2Fazuredeploy.json)
 1. **Contribute** to the TESTNET [learn more](https://github.com/BitSharesEurope/testnet) 
 
@@ -39,8 +39,8 @@ When you click the *Deploy to Azure* icon above, you will be redirected to your 
 1. Complete the template parameters, accept the terms and click Create
 1. Wait about 15 minutes for the VM to spin up and install the bits
 1. Connect to the VM via SSH using the DNS name assigned to your Public IP
-1. Review the install log file for status update `$ tail ~/status.log`
-1. Obtain your credentials
+1. TODO: Review the install log file for status update `$ tail ~/status.log`
+1. TODO: Obtain your credentials
   1. View the brain_key.json file `$ tail ~/brain_key.json`
   2. Copy the WIF private key for use in a future step
   3. Save the contents of this file in a secure location
