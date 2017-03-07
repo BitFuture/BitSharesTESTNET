@@ -98,6 +98,7 @@ service $PROJECT stop
 sed -i 's/# p2p-endpoint =/p2p-endpoint = '$LOCAL_IP':'$P2P_PORT'/g' /home/$USER_NAME/$PROJECT/witness_node/config.ini
 sed -i 's/# rpc-endpoint =/rpc-endpoint = '$LOCAL_IP':'$RPC_PORT'/g' /home/$USER_NAME/$PROJECT/witness_node/config.ini
 sed -i 's/level=debug/level=info/g' /home/$USER_NAME/$PROJECT/witness_node/config.ini
+wait 3
 service $PROJECT start
 
 ##################################################################################################
@@ -107,7 +108,7 @@ service $PROJECT start
 cat >/home/$USER_NAME/launch_$PROJECT_wallet.sh <<EOL
 /usr/bin/$CLI_WALLET -w /home/$USER_NAME/$PROJECT/cli_wallet/wallet.json
 EOL
-chmod +x /home/$USER_NAME/launch_testnet_wallet.sh
+chmod +x /home/$USER_NAME/launch_$PROJECT_wallet.sh
 
 ##################################################################################################
 # SSH to: <VMname>.<region>.cloudapp.azure.com                                                   #
