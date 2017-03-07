@@ -105,10 +105,11 @@ service $PROJECT start
 # Create a script to launch the cli_wallet using a wallet file stored at                         #
 # /home/$USER_NAME/$PROJECT/cli_wallet/wallet.json                                               #
 ##################################################################################################
-cat >/home/$USER_NAME/launch_$PROJECT_wallet.sh <<EOL
-/usr/bin/$CLI_WALLET -w /home/$USER_NAME/$PROJECT/cli_wallet/wallet.json
+cat >/home/$USER_NAME/launch_$PROJECT-wallet.sh <<EOL
+/usr/bin/$CLI_WALLET -w /home/$USER_NAME/$PROJECT/cli_wallet/wallet.json \
+                     -s ws://$LOCAL_IP:$RPC_PORT
 EOL
-chmod +x /home/$USER_NAME/launch_$PROJECT_wallet.sh
+chmod +x /home/$USER_NAME/launch_$PROJECT-wallet.sh
 
 ##################################################################################################
 # SSH to: <VMname>.<region>.cloudapp.azure.com                                                   #
