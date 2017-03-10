@@ -98,18 +98,17 @@ service $PROJECT stop
 sed -i 's/# p2p-endpoint =/p2p-endpoint = '$LOCAL_IP':'$P2P_PORT'/g' /home/$USER_NAME/$PROJECT/witness_node/config.ini
 sed -i 's/# rpc-endpoint =/rpc-endpoint = '$LOCAL_IP':'$RPC_PORT'/g' /home/$USER_NAME/$PROJECT/witness_node/config.ini
 sed -i 's/level=debug/level=info/g' /home/$USER_NAME/$PROJECT/witness_node/config.ini
-wait 3
 service $PROJECT start
 
 ##################################################################################################
 # Create a script to launch the cli_wallet using a wallet file stored at                         #
 # /home/$USER_NAME/$PROJECT/cli_wallet/wallet.json                                               #
 ##################################################################################################
-cat >/home/$USER_NAME/launch_$PROJECT-wallet.sh <<EOL
+cat >/home/$USER_NAME/launch-$PROJECT-wallet.sh <<EOL
 /usr/bin/$CLI_WALLET -w /home/$USER_NAME/$PROJECT/cli_wallet/wallet.json \
                      -s ws://$LOCAL_IP:$RPC_PORT
 EOL
-chmod +x /home/$USER_NAME/launch_$PROJECT-wallet.sh
+chmod +x /home/$USER_NAME/launch-$PROJECT-wallet.sh
 
 ##################################################################################################
 # SSH to: <VMname>.<region>.cloudapp.azure.com                                                   #
