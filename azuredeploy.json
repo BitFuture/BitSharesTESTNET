@@ -23,19 +23,19 @@
     "newWitnessName": {
       "type": "string",
       "metadata": {
-        "description": "Your NEW witness account name. This account will be registered to the blockcahin, upgraded to LTM, and registered as a witness. MUST be lowercase."
+        "description": "TODO: Your NEW witness account name. This account will be registered to the blockcahin, upgraded to LTM, and registered as a witness. MUST be lowercase."
       }
     },
     "vmSize": {
       "type": "string",
-      "defaultValue": "Standard_DS2_V2",
+      "defaultValue": "Standard_DS11_V2",
       "allowedValues": [
-        "Standard_DS1_V2",
-        "Standard_DS2_V2",
-        "Standard_DS3_V2",
-        "Standard_DS4_V2",
-        "Standard_A8",
-        "Standard_A9",
+        "Standard_DS11_V2",
+        "Standard_DS12_V2",
+        "Standard_DS13_V2",
+        "Standard_DS15_V2",
+        "Standard_A10",
+        "Standard_A11",
         "Standard_H8",
         "Standard_H16",
         "Standard_H16r"
