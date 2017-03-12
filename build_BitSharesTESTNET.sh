@@ -10,6 +10,8 @@ FQDN=$2
 NPROC=$(nproc)
 LOCAL_IP=`ifconfig|xargs|awk '{print $7}'|sed -e 's/[a-z]*:/''/'`
 RPC_PORT=8090
+WALLET_WS_RPC_PORT=8091
+WALLET_RPC_PORT=8092
 P2P_PORT=1776
 PROJECT=testnet
 GITHUB_REPOSITORY=https://github.com/BitSharesEurope/testnet.git
@@ -22,6 +24,7 @@ echo "nproc: $NPROC"
 echo "eth0: $LOCAL_IP"
 echo "P2P_PORT: $P2P_PORT"
 echo "RPC_PORT: $RPC_PORT"
+echo "WALLET_RPC_PORT: $RPC_PORT"
 echo "GITHUB_REPOSITORY: $GITHUB_REPOSITORY"
 echo "PROJECT: $PROJECT"
 echo "WITNESS_NODE: $WITNESS_NODE"
@@ -107,7 +110,9 @@ service $PROJECT start
 mkdir /home/$USER_NAME/$PROJECT/cli_wallet/
 cat >/home/$USER_NAME/launch-$PROJECT-wallet.sh <<EOL
 /usr/bin/$CLI_WALLET -w /home/$USER_NAME/$PROJECT/cli_wallet/wallet.json \
-                     -s ws://$LOCAL_IP:$RPC_PORT
+                     -s ws://$LOCAL_IP:$RPC_PORT \
+					 -H 127.0.0.1:$WALLET_HTTP_RPC_PORT \
+					 -r 127.0.0.1:$WALLET_WS_RPC_PORT
 EOL
 chmod +x /home/$USER_NAME/launch-$PROJECT-wallet.sh
 
