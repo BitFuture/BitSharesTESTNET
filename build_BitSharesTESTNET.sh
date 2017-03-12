@@ -104,6 +104,7 @@ service $PROJECT start
 # Create a script to launch the cli_wallet using a wallet file stored at                         #
 # /home/$USER_NAME/$PROJECT/cli_wallet/wallet.json                                               #
 ##################################################################################################
+mkdir /home/$USER_NAME/$PROJECT/cli_wallet/
 cat >/home/$USER_NAME/launch-$PROJECT-wallet.sh <<EOL
 /usr/bin/$CLI_WALLET -w /home/$USER_NAME/$PROJECT/cli_wallet/wallet.json \
                      -s ws://$LOCAL_IP:$RPC_PORT
