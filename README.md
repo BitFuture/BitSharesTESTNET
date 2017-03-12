@@ -51,10 +51,10 @@ When you click the *Deploy to Azure* icon above, you will be redirected to your 
   1. Within the results, note the values for _"time"_ and _"head_block_age"_
   1. While syncing these values will be the time of the synced block and how old that block is. Be patient
   1. Syncing is complete when these values are just a few seconds old
-1. Wait for your desired name to be mined on the blockchain
+1. Wait for your desired name to be registered on the blockchain
 1. Import your private key into your wallet
   1. Ensure the wallet is unlocked
-  1. Use the WIF private key you copied earlier from the ~/brain_key.json file `unlocked >>> import_key 5yourPrivateKeyStartsWith5...`
+  1. Use the WIF private key you copied earlier from the ~/brain_key.json file `unlocked >>> import_key your_account_name 5yourPrivateKeyStartsWith5...`
 1. Exit to save the wallet using `ctrl-d` 
 1. View your wallet file: `tail ~/testnet/cli_wallet/wallet.json`
 2. Save your wallet file in a secure location as a backup.
