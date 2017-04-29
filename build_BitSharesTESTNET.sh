@@ -85,7 +85,7 @@ sed -i 's/add_subdirectory( debug_witness )/#add_subdirectory( debug_witness )/g
 # Build the PRIVATE GRAPHENE witness node and CLI wallet.                                        #
 ##################################################################################################
 cd /usr/local/src/$PROJECT/
-time cmake -DCMAKE_BUILD_TYPE=Debug .
+time cmake -DCMAKE_BUILD_TYPE=Release .
 time make -j$NPROC
 
 cp /usr/local/src/$PROJECT/programs/witness_node/witness_node /usr/bin/$WITNESS_NODE
