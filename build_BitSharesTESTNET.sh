@@ -72,7 +72,6 @@ sed -i 's%    ${CMAKE_CURRENT_SOURCE_DIR}/vendor/equihash%#    ${CMAKE_CURRENT_S
 sed -i 's%target_link_libraries( fc PUBLIC ${LINK_USR_LOCAL_LIB} equihash ${%target_link_libraries( fc PUBLIC ${LINK_USR_LOCAL_LIB} ${%g' /usr/local/src/$PROJECT/libraries/fc/CMakeLists.txt
 sed -i 's/add_subdirectory( debug_node )/#add_subdirectory( debug_node )/g' /usr/local/src/$PROJECT/programs/CMakeLists.txt
 sed -i 's/add_subdirectory( delayed_node )/#add_subdirectory( delayed_node )/g' /usr/local/src/$PROJECT/programs/CMakeLists.txt
-sed -i 's/add_subdirectory( build_helpers )/#add_subdirectory( build_helpers )/g' /usr/local/src/$PROJECT/programs/CMakeLists.txt
 sed -i 's/add_subdirectory( genesis_util )/#add_subdirectory( genesis_util )/g' /usr/local/src/$PROJECT/programs/CMakeLists.txt
 sed -i 's/add_subdirectory( js_operation_serializer )/#add_subdirectory( js_operation_serializer )/g' /usr/local/src/$PROJECT/programs/CMakeLists.txt
 sed -i 's/add_subdirectory( size_checker )/#add_subdirectory( size_checker )/g' /usr/local/src/$PROJECT/programs/CMakeLists.txt
@@ -85,7 +84,7 @@ sed -i 's/add_subdirectory( debug_witness )/#add_subdirectory( debug_witness )/g
 # Build the PRIVATE GRAPHENE witness node and CLI wallet.                                        #
 ##################################################################################################
 cd /usr/local/src/$PROJECT/
-time cmake -DCMAKE_BUILD_TYPE=Release .
+time cmake -DCMAKE_BUILD_TYPE=Debug .
 time make -j$NPROC
 
 cp /usr/local/src/$PROJECT/programs/witness_node/witness_node /usr/bin/$WITNESS_NODE
