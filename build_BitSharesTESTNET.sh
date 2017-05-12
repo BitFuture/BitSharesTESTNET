@@ -15,6 +15,8 @@ WALLET_RPC_PORT=8092
 P2P_PORT=1776
 PROJECT=testnet
 GITHUB_REPOSITORY=https://github.com/BitSharesEurope/testnet.git
+RELEASE=master
+DCMAKE_BUILD_TYPE=Release
 WITNESS_NODE=testnet_witness_node
 CLI_WALLET=testnet_cli_wallet
 
@@ -26,8 +28,10 @@ echo "P2P_PORT: $P2P_PORT"
 echo "WITNESS_RPC_PORT: $WITNESS_RPC_PORT"
 echo "WALLET_HTTP_RPC_PORT: $WALLET_HTTP_RPC_PORT"
 echo "WALLET_RPC_PORT: $WALLET_RPC_PORT"
-echo "GITHUB_REPOSITORY: $GITHUB_REPOSITORY"
 echo "PROJECT: $PROJECT"
+echo "GITHUB_REPOSITORY: $GITHUB_REPOSITORY"
+echo "RELEASE: $RELEASE"
+echo "DCMAKE_BUILD_TYPE: $DCMAKE_BUILD_TYPE"
 echo "WITNESS_NODE: $WITNESS_NODE"
 echo "CLI_WALLET: $CLI_WALLET"
 
@@ -62,13 +66,15 @@ echo "Clone $PROJECT project..."
 cd /usr/local/src
 time git clone $GITHUB_REPOSITORY
 cd $PROJECT
-time git submodule update --init --recursive
+time git checkout $RELEASE
 sed -i 's/add_subdirectory( tests )/#add_subdirectory( tests )/g' /usr/local/src/$PROJECT/CMakeLists.txt
 sed -i 's/add_subdirectory(tests)/#add_subdirectory(tests)/g' /usr/local/src/$PROJECT/libraries/fc/CMakeLists.txt
+sed -i 's%auto history_plug = node->register_plugin%//auto history_plug = node->register_plugin%g' /usr/local/src/$PROJECT/programs/witness_node/main.cpp
+sed -i 's%auto market_history_plug = node->register_plugin%//auto market_history_plug = node->register_plugin%g' /usr/local/src/$PROJECT/programs/witness_node/main.cpp
 sed -i 's%include_directories( vendor/equihash )%#include_directories( vendor/equihash )%g' /usr/local/src/$PROJECT/libraries/fc/CMakeLists.txt
-sed -i 's%     src/crypto/equihash.cpp%#     src/crypto/equihash.cpp%g' /usr/local/src/$PROJECT/libraries/fc/CMakeLists.txt
+sed -i 's%src/crypto/equihash.cpp%#src/crypto/equihash.cpp%g' /usr/local/src/$PROJECT/libraries/fc/CMakeLists.txt
 sed -i 's%add_subdirectory( vendor/equihash )%#add_subdirectory( vendor/equihash )%g' /usr/local/src/$PROJECT/libraries/fc/CMakeLists.txt
-sed -i 's%    ${CMAKE_CURRENT_SOURCE_DIR}/vendor/equihash%#    ${CMAKE_CURRENT_SOURCE_DIR}/vendor/equihash%g' /usr/local/src/$PROJECT/libraries/fc/CMakeLists.txt
+sed -i 's%${CMAKE_CURRENT_SOURCE_DIR}/vendor/equihash%#${CMAKE_CURRENT_SOURCE_DIR}/vendor/equihash%g' /usr/local/src/$PROJECT/libraries/fc/CMakeLists.txt
 sed -i 's%target_link_libraries( fc PUBLIC ${LINK_USR_LOCAL_LIB} equihash ${%target_link_libraries( fc PUBLIC ${LINK_USR_LOCAL_LIB} ${%g' /usr/local/src/$PROJECT/libraries/fc/CMakeLists.txt
 sed -i 's/add_subdirectory( debug_node )/#add_subdirectory( debug_node )/g' /usr/local/src/$PROJECT/programs/CMakeLists.txt
 sed -i 's/add_subdirectory( delayed_node )/#add_subdirectory( delayed_node )/g' /usr/local/src/$PROJECT/programs/CMakeLists.txt
@@ -84,7 +90,8 @@ sed -i 's/add_subdirectory( debug_witness )/#add_subdirectory( debug_witness )/g
 # Build the PRIVATE GRAPHENE witness node and CLI wallet.                                        #
 ##################################################################################################
 cd /usr/local/src/$PROJECT/
-time cmake -DCMAKE_BUILD_TYPE=Debug .
+time git submodule update --init --recursive
+time cmake -DCMAKE_BUILD_TYPE=$DCMAKE_BUILD_TYPE .
 time make -j$NPROC
 
 cp /usr/local/src/$PROJECT/programs/witness_node/witness_node /usr/bin/$WITNESS_NODE
